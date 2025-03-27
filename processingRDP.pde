@@ -7,14 +7,21 @@ class Point {
   }
 }
 
+// store the original points
 ArrayList<Point> points = new ArrayList<Point>();
+// store the simplified list
 ArrayList<Point> simplified = new ArrayList<Point>();
+// the distance tolerance, squared.
 float distanceToleranceSq = pow(5,2);
+// used to remember which points to keep before culling the list.
+boolean [] keep;
 
 void setup() {
   size(800,800);
   //setupCase1();
   setupCase2();
+  for( var p : points ) simplified.add(p);
+  
   simplifyLine(simplified);
 }
 
@@ -32,7 +39,6 @@ void setupCase1() {
     x+=dx;
     y+=dy;
     points.add(new Point(x,y));
-    simplified.add(new Point(x,y));
   }
 }
 
@@ -49,7 +55,6 @@ void setupCase2() {
   for( var p : points) {
     p.x = p.x * 50 + 50;
     p.y = p.y * 50 + 50;
-    simplified.add(new Point(p.x,p.y));
   }
 }
 
@@ -80,7 +85,7 @@ void drawChainOfPoints(ArrayList<Point> list) {
   endShape();
 }
 
-boolean [] keep;
+
 void simplifyLine(ArrayList<Point> list) {
   var s = list.size();
   keep = new boolean[s];
